@@ -1,0 +1,122 @@
+[
+  {
+    "id": "txn_0001",
+    "description": "Lunch at cafeteria",
+    "amount": "12.50",
+    "category": "Food",
+    "type": "expense",
+    "date": "2025-09-01",
+    "createdAt": "2025-09-01T08:30:00.000Z",
+    "updatedAt": "2025-09-01T08:30:00.000Z"
+  },
+  {
+    "id": "txn_0002",
+    "description": "Scholarship allowance",
+    "amount": "300000",
+    "category": "Other",
+    "type": "income",
+    "date": "2025-09-02",
+    "createdAt": "2025-09-02T09:00:00.000Z",
+    "updatedAt": "2025-09-02T09:00:00.000Z"
+  },
+  {
+    "id": "txn_0003",
+    "description": "Monthly bus pass",
+    "amount": "4500",
+    "category": "Transport",
+    "type": "expense",
+    "date": "2025-02-28",
+    "createdAt": "2025-02-28T07:15:00.000Z",
+    "updatedAt": "2025-02-28T07:15:00.000Z"
+  },
+  {
+    "id": "txn_0004",
+    "description": "Chemistry textbook",
+    "amount": "8500",
+    "category": "Books & Stationery",
+    "type": "expense",
+    "date": "2025-12-31",
+    "createdAt": "2025-12-31T10:00:00.000Z",
+    "updatedAt": "2025-12-31T10:00:00.000Z"
+  },
+  {
+    "id": "txn_0005",
+    "description": "Coffee at campus cafe",
+    "amount": "0.50",
+    "category": "Food",
+    "type": "expense",
+    "date": "2025-01-01",
+    "createdAt": "2025-01-01T11:00:00.000Z",
+    "updatedAt": "2025-01-01T11:00:00.000Z"
+  },
+  {
+    "id": "txn_0006",
+    "description": "Part-time job payment",
+    "amount": "999999.99",
+    "category": "Other",
+    "type": "income",
+    "date": "2025-09-06",
+    "createdAt": "2025-09-06T16:00:00.000Z",
+    "updatedAt": "2025-09-06T16:00:00.000Z"
+  },
+  {
+    "id": "txn_0007",
+    "description": "Movie night with friends",
+    "amount": "2000",
+    "category": "Entertainment",
+    "type": "expense",
+    "date": "2025-03-31",
+    "createdAt": "2025-03-31T19:00:00.000Z",
+    "updatedAt": "2025-03-31T19:00:00.000Z"
+  },
+  {
+    "id": "txn_0008",
+    "description": "Monthly rent payment",
+    "amount": "80000",
+    "category": "Housing",
+    "type": "expense",
+    "date": "2025-09-01",
+    "createdAt": "2025-09-01T08:00:00.000Z",
+    "updatedAt": "2025-09-01T08:00:00.000Z"
+  },
+  {
+    "id": "txn_0009",
+    "description": "Tea and snacks",
+    "amount": "1",
+    "category": "Food",
+    "type": "expense",
+    "date": "2025-11-30",
+    "createdAt": "2025-11-30T10:30:00.000Z",
+    "updatedAt": "2025-11-30T10:30:00.000Z"
+  },
+  {
+    "id": "txn_0010",
+    "description": "Sold old notes",
+    "amount": "5000",
+    "category": "Books & Stationery",
+    "type": "income",
+    "date": "2025-09-10",
+    "createdAt": "2025-09-10T14:00:00.000Z",
+    "updatedAt": "2025-09-10T14:00:00.000Z"
+  },
+  {
+    "id": "txn_0011",
+    "description": "Annual gym membership",
+    "amount": "150000",
+    "category": "Entertainment",
+    "type": "expense",
+    "date": "2025-01-31",
+    "createdAt": "2025-01-31T09:00:00.000Z",
+    "updatedAt": "2025-01-31T09:00:00.000Z"
+  },
+  {
+    "id": "txn_0012",
+    "description": "A4 printing paper",
+    "amount": "250.75",
+    "category": "Books & Stationery",
+    "type": "expense",
+    "date": "2025-10-01",
+    "createdAt": "2025-10-01T12:00:00.000Z",
+    "updatedAt": "2025-10-01T12:00:00.000Z"
+  }
+]

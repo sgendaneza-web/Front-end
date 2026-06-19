@@ -1,53 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
- <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CampusCash</title>
-    <link rel="stylesheet" href="main.css"/>
- </head>
- <body>
+    <link rel="icon" type="image/jpg"  href="money.jpg"/>
+    <link rel="stylesheet" href="styles/main.css" />
+    <link rel="stylesheet" href="styles/dashboard.css" />
+  </head>
+  <body>
+
+    <!-- Skip to content (accessibility) -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
 
     <div class="app-layout">
-    <header class="sidebar hidden" id="sidebar">
+
+      <!-- Sidebar (hidden until setup complete) -->
+      <header class="sidebar hidden" id="sidebar">
         <h1>CampusCash</h1>
-        <nav aria-label="Main-navigation">
-            <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#dashboard">Dashboard</a></li>
-                <li><a href="#transactions">Transactions</a></li>
-                <li><a href="#add">Add</a></li>
-                <li><a href="#settings">Settings</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
+        <nav aria-label="Main navigation">
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#transactions">Transactions</a></li>
+            <li><a href="#add">Add</a></li>
+            <li><a href="#settings">Settings</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
         </nav>
-    </header>
-    <main id="main-content">
+      </header>
+
+      <!-- Main content -->
+      <main id="main-content">
+
+        <!-- ARIA live status messages -->
+        <div id="status-msg" role="status" aria-live="polite" class="sr-only"></div>
+
+        <!-- ===== SETUP ===== -->
         <section id="setup" aria-label="Account setup">
-            <h2>Welcome to CampusCash</h2>
-            <p>Let's set up your account</p>
+          <h2>Welcome to CampusCash </h2>
+          <p>Let's set up your student budget. It only takes a minute.</p>
+
+          <form id="setup-form" novalidate>
+
+            <div class="form-group">
+              <label for="setup-name">Your name</label>
+              <input type="text" id="setup-name" autocomplete="given-name" required />
+              <span class="field-error" id="setup-name-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="setup-period">Budget period</label>
+              <select id="setup-period">
+                <option value="Trimester">Trimester</option>
+                <option value="Semester">Semester</option>
+                <option value="Year">Full Year</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="setup-start">Start date</label>
+              <input type="date" id="setup-start" required />
+              <span class="field-error" id="setup-start-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="setup-end">End date</label>
+              <input type="date" id="setup-end" required />
+              <span class="field-error" id="setup-end-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="setup-income">Total income / allowance for this period</label>
+              <input type="text" id="setup-income" placeholder="e.g. 500000" required />
+              <span class="field-error" id="setup-income-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="setup-currency">Currency</label>
+              <select id="setup-currency">
+                <option value="RWF">RWF — Rwandan Franc</option>
+                <option value="USD">USD — US Dollar</option>
+                <option value="EUR">EUR — Euro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="setup-housing">Do you pay rent?</label>
+              <select id="setup-housing">
+                <option value="no">No (living at home / on campus)</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="form-group hidden" id="rent-group">
+              <label for="setup-rent">Monthly rent amount</label>
+              <input type="text" id="setup-rent" placeholder="e.g. 80000" />
+              <span class="field-error" id="setup-rent-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Get Started</button>
+              <button type="button" id="skip-setup-btn" class="btn-secondary">Skip for now</button>
+            </div>
+
+          </form>
         </section>
+
+        <!-- ===== HOME ===== -->
         <section id="home" class="hidden" aria-label="Home">
-            <h2>Welcome to CampusCash</h2>
-            <p>We're here to make tracking your transactions easier. Use the menu to check your dashboard, log expenses, or update your settings.</p>
+          <div class="home-hero">
+            <h2>Welcome back, <span id="home-name">there</span>! </h2>
+            <p class="home-tagline">Your money, your campus, your control.</p>
+          </div>
+          <div class="home-cards">
+            <div class="home-card">
+              <span class="home-card-icon"></span>
+              <h3>Dashboard</h3>
+              <p>See your spending overview, budget progress, and 7-day trends at a glance.</p>
+              <button class="btn-primary nav-shortcut" data-target="dashboard">Go to Dashboard</button>
+            </div>
+            <div class="home-card">
+              <span class="home-card-icon"></span>
+              <h3>Add Expense</h3>
+              <p>Log a new transaction quickly — food, transport, housing, and more.</p>
+              <button class="btn-primary nav-shortcut" data-target="add">Add Transaction</button>
+            </div>
+            <div class="home-card">
+              <span class="home-card-icon"></span>
+              <h3>Transactions</h3>
+              <p>Search, sort, and review all your recorded expenses and income.</p>
+              <button class="btn-primary nav-shortcut" data-target="transactions">View Transactions</button>
+            </div>
+          </div>
         </section>
+
+        <!-- ===== DASHBOARD ===== -->
         <section id="dashboard" class="hidden" aria-label="Dashboard">
-            <h2>Dashboard</h2>
+          <h2>Dashboard</h2>
+
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-label">Total Income</span>
+              <span class="stat-value" id="income">0</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Total Expenses</span>
+              <span class="stat-value" id="expenses">0</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Balance</span>
+              <span class="stat-value" id="total">0</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Top Category</span>
+              <span class="stat-value" id="top-category">None</span>
+            </div>
+          </div>
+
+          <div class="budget-section">
+            <label for="budget-cap">Budget Cap</label>
+            <input type="number" id="budget-cap" placeholder="Set a spending cap" />
+            <div class="progress-bar-wrap">
+              <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            <p id="budget-status" aria-live="polite" role="status"></p>
+          </div>
+
+          <div class="chart-section">
+            <h3>Last 7 Days</h3>
+            <canvas id="trend-chart" width="600" height="200" aria-label="7-day spending trend chart" role="img"></canvas>
+          </div>
+
+          <div class="category-bars" id="category-bars">
+            <h3>Spending by Category</h3>
+          </div>
         </section>
+
+        <!-- ===== TRANSACTIONS ===== -->
         <section id="transactions" class="hidden" aria-label="Transactions">
-            <h2>Transactions</h2>
+          <h2>Transactions</h2>
+
+          <div class="search-bar">
+            <label for="search-input">Search (regex supported)</label>
+            <input type="text" id="search-input" placeholder="e.g. coffee|tea or ^\w{4}$" />
+            <label class="checkbox-label">
+              <input type="checkbox" id="ignore-case" checked />
+              Ignore case
+            </label>
+          </div>
+
+          <div class="sort-bar">
+            <span>Sort by:</span>
+            <button id="sort-date" class="btn-sort">Date ↕</button>
+            <button id="sort-desc" class="btn-sort">Description A↕Z</button>
+            <button id="sort-amount" class="btn-sort">Amount ↑↓</button>
+          </div>
+
+          <div class="table-wrap">
+            <table id="transactions-table">
+              <thead>
+                <tr>
+                  <th scope="col">Description</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">Category</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-body"></tbody>
+            </table>
+            <p id="no-results" class="hidden">No transactions match your search.</p>
+          </div>
+
+          <div class="import-export">
+            <button id="export-btn" class="btn-secondary">⬇ Export JSON</button>
+            <label for="import-file" class="btn-secondary btn-file-label">⬆ Import JSON</label>
+            <input type="file" id="import-file" accept=".json" class="visually-hidden" />
+          </div>
         </section>
-        <section id="add" class="hidden" aria-label="Add">
-            <h2>Add expense</h2>
+
+        <!-- ===== ADD / EDIT ===== -->
+        <section id="add" class="hidden" aria-label="Add or edit transaction">
+          <h2 id="form-title">Add Transaction</h2>
+
+          <form id="transaction-form" novalidate>
+            <input type="hidden" id="edit-id" />
+
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input type="text" id="description" required />
+              <span class="field-error" id="desc-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="amount">Amount</label>
+              <input type="text" id="amount" placeholder="e.g. 2500 or 12.50" required />
+              <span class="field-error" id="amount-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category" required>
+                <option value="">Choose category</option>
+                <option value="Food">Food</option>
+                <option value="Housing">Housing</option>
+                <option value="Transport">Transport</option>
+                <option value="Books & Stationery">Books &amp; Stationery</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Other">Other</option>
+              </select>
+              <span class="field-error" id="cat-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="type">Type</label>
+              <select id="type">
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="date">Date</label>
+              <input type="date" id="date" required />
+              <span class="field-error" id="date-error" aria-live="polite"></span>
+            </div>
+
+            <div id="form-error" role="status" aria-live="polite" class="form-error-box hidden"></div>
+            <div id="form-success" role="status" aria-live="polite" class="form-success-box hidden"></div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary" id="submit-btn">Add Transaction</button>
+              <button type="button" class="btn-secondary hidden" id="cancel-edit-btn">Cancel Edit</button>
+            </div>
+          </form>
         </section>
+
+        <!-- ===== SETTINGS ===== -->
         <section id="settings" class="hidden" aria-label="Settings">
-            <h2>Settings</h2>
+          <h2>Settings</h2>
+
+          <form id="settings-form" novalidate>
+
+            <div class="form-group">
+              <label for="settings-name">Your name</label>
+              <input type="text" id="settings-name" />
+            </div>
+
+            <div class="form-group">
+              <label for="settings-period">Budget period</label>
+              <select id="settings-period">
+                <option value="Trimester">Trimester</option>
+                <option value="Semester">Semester</option>
+                <option value="Year">Full Year</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="settings-start">Start date</label>
+              <input type="date" id="settings-start" />
+            </div>
+
+            <div class="form-group">
+              <label for="settings-end">End date</label>
+              <input type="date" id="settings-end" />
+            </div>
+
+            <div class="form-group">
+              <label for="settings-income">Total income / allowance</label>
+              <input type="text" id="settings-income" placeholder="e.g. 500000" />
+              <span class="field-error" id="settings-income-error" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="settings-currency">Currency</label>
+              <select id="settings-currency">
+                <option value="RWF">RWF — Rwandan Franc</option>
+                <option value="USD">USD — US Dollar</option>
+                <option value="EUR">EUR — Euro</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="settings-housing">Do you pay rent?</label>
+              <select id="settings-housing">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="form-group hidden" id="settings-rent-group">
+              <label for="settings-rent">Monthly rent</label>
+              <input type="text" id="settings-rent" placeholder="e.g. 80000" />
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Save Settings</button>
+            </div>
+
+            <div id="settings-success" role="status" aria-live="polite" class="form-success-box hidden">
+              Settings saved!
+            </div>
+          </form>
+
+          <div class="danger-zone">
+            <h3>Data</h3>
+            <button id="load-seed-btn" class="btn-secondary">Load Sample Data</button>
+            <button id="clear-data-btn" class="btn-danger">Clear All Data</button>
+          </div>
         </section>
-        <section id="about" class="hidden" aria-label="About">
-            <h2>About</h2>
+
+        <!-- ===== ABOUT ===== -->
+        <section id="about" class="hidden" aria-label="About CampusCash">
+          <h2>About CampusCash</h2>
+          <p>CampusCash is a personal finance tracker built for students. Log your income and expenses, set budget caps, and always know where your money is going — whether you're buying lunch at the cafeteria or paying monthly rent.</p>
+
+          <div class="about-links">
+            <p><strong>Built by:</strong> Your Name Here</p>
+            <p><strong>GitHub:</strong> <a href="https://github.com/yourusername" target="_blank" rel="noopener">github.com/yourusername</a></p>
+            <p><strong>Email:</strong> <a href="mailto:your@email.com">your@email.com</a></p>
+          </div>
+
+          <div class="keyboard-map">
+            <h3>Keyboard Navigation</h3>
+            <ul>
+              <li><kbd>Tab</kbd> — Move between interactive elements</li>
+              <li><kbd>Enter</kbd> / <kbd>Space</kbd> — Activate buttons and links</li>
+              <li><kbd>Shift+Tab</kbd> — Move backwards</li>
+              <li><kbd>Esc</kbd> — Cancel edit mode</li>
+            </ul>
+          </div>
         </section>
-    </main>
+
+      </main>
     </div>
-    <footer>CampusCash & copyright2026</footer>
- </body>
+
+    <footer>
+      <p>CampusCash &copy; 2026 </p>
+    </footer>
+
+    <script type="module" src="scripts/ui.js"></script>
+  </body>
 </html>

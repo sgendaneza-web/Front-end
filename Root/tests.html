@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusCash — Tests</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      padding: 32px;
+      background: #f5f0e8;
+      color: #2d2d2d;
+    }
+    h1 {
+      color: #2c7a7b;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      color: #777;
+      margin-bottom: 28px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    li {
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .pass {
+      background: #eafaf1;
+      color: #1e8449;
+      border: 1px solid #a9dfbf;
+    }
+    .fail {
+      background: #fdecea;
+      color: #c0392b;
+      border: 1px solid #f1948a;
+    }
+    .section-title {
+      font-weight: 700;
+      color: #2c7a7b;
+      margin: 20px 0 8px;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    #summary {
+      margin-top: 24px;
+      padding: 14px 20px;
+      background: #fff;
+      border-radius: 10px;
+      border: 1.5px solid #e0d9ce;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>CampusCash — Validation Tests</h1>
+  <p class="subtitle">Open this file via Live Server to run all tests.</p>
+
+  <ul id="results"></ul>
+  <div id="summary"></div>
+
+  <script type="module">
+    import { validateTransaction, PATTERNS } from "./scripts/validators.js";
+    import { compileRegex, highlight } from "./scripts/search.js";
+
+    const results = document.getElementById("results");
+    let passed = 0;
+    let failed = 0;
+
+    function test(name, condition) {
+      const li = document.createElement("li");
+      li.className = condition ? "pass" : "fail";
+      li.textContent = `${condition ? "✓" : "✗"} ${name}`;
+      results.appendChild(li);
+      condition ? passed++ : failed++;
+    }
+
+    function sectionTitle(title) {
+      const p = document.createElement("p");
+      p.className = "section-title";
+      p.textContent = title;
+      results.appendChild(p);
+    }
+
+    const base = {
+      description: "Lunch",
+      amount: "12.50",
+      category: "Food",
+      type: "expense",
+      date: "2025-09-30"
+    };
+
+    // -----------------------------------------------
+    sectionTitle("Description Validation");
+    // -----------------------------------------------
+    test("Valid description passes",
+      validateTransaction({ ...base }).length === 0);
+
+    test("Description with leading space is rejected",
+      validateTransaction({ ...base, description: " Lunch" }).length > 0);
+
+    test("Description with trailing space is rejected",
+      validateTransaction({ ...base, description: "Lunch " }).length > 0);
+
+    test("Empty description is rejected",
+      validateTransaction({ ...base, description: "" }).length > 0);
+
+    // -----------------------------------------------
+    sectionTitle("Amount Validation");
+    // -----------------------------------------------
+    test("Valid integer amount passes",
+      validateTransaction({ ...base, amount: "500" }).length === 0);
+
+    test("Valid decimal amount passes",
+      validateTransaction({ ...base, amount: "12.50" }).length === 0);
+
+    test("Amount with 3 decimal places is rejected",
+      validateTransaction({ ...base, amount: "12.999" }).length > 0);
+
+    test("Negative amount is rejected",
+      validateTransaction({ ...base, amount: "-50" }).length > 0);
+
+    test("Amount with letters is rejected",
+      validateTransaction({ ...base, amount: "abc" }).length > 0);
+
+    test("Zero amount passes",
+      validateTransaction({ ...base, amount: "0" }).length === 0);
+
+    // -----------------------------------------------
+    sectionTitle("Date Validation");
+    // -----------------------------------------------
+    test("Valid date passes",
+      validateTransaction({ ...base, date: "2025-01-15" }).length === 0);
+
+    test("Invalid month 13 is rejected",
+      validateTransaction({ ...base, date: "2025-13-01" }).length > 0);
+
+    test("Invalid day 99 is rejected",
+      validateTransaction({ ...base, date: "2025-09-99" }).length > 0);
+
+    test("Date without dashes is rejected",
+      validateTransaction({ ...base, date: "20250930" }).length > 0);
+
+    test("Empty date is rejected",
+      validateTransaction({ ...base, date: "" }).length > 0);
+
+    // -----------------------------------------------
+    sectionTitle("Category Validation");
+    // -----------------------------------------------
+    test("'Food' category passes",
+      validateTransaction({ ...base, category: "Food" }).length === 0);
+
+    test("'Books & Stationery' category passes",
+      validateTransaction({ ...base, category: "Books & Stationery" }).length === 0);
+
+    test("Category with numbers is rejected",
+      validateTransaction({ ...base, category: "Food123" }).length > 0);
+
+    test("Empty category is rejected",
+      validateTransaction({ ...base, category: "" }).length > 0);
+
+    // -----------------------------------------------
+    sectionTitle("Advanced Regex — Duplicate Words");
+    // -----------------------------------------------
+    test("'coffee coffee' triggers duplicate word error",
+      validateTransaction({ ...base, description: "coffee coffee" }).length > 0);
+
+    test("'the the bus' triggers duplicate word error",
+      validateTransaction({ ...base, description: "the the bus" }).length > 0);
+
+    test("'Morning Coffee' does NOT trigger duplicate word error",
+      !validateTransaction({ ...base, description: "Morning Coffee" }).some(e => e.includes("duplicate")));
+
+    // -----------------------------------------------
+    sectionTitle("Regex Search — compileRegex");
+    // -----------------------------------------------
+    test("Valid pattern compiles correctly",
+      compileRegex("coffee") instanceof RegExp);
+
+    test("Invalid pattern returns null (doesn't crash)",
+      compileRegex("[invalid") === null);
+
+    test("Empty pattern returns null",
+      compileRegex("") === null);
+
+    test("Case-insensitive flag applied when ignoreCase = true",
+      compileRegex("coffee", true).flags.includes("i"));
+
+    // -----------------------------------------------
+    sectionTitle("Regex Highlight");
+    // -----------------------------------------------
+    test("highlight wraps match in <mark> tag",
+      highlight("I had coffee", compileRegex("coffee")).includes("<mark>"));
+
+    test("highlight with null regex returns original text",
+      highlight("I had coffee", null) === "I had coffee");
+
+    // -----------------------------------------------
+    // Summary
+    // -----------------------------------------------
+    const summary = document.getElementById("summary");
+    const total = passed + failed;
+    summary.textContent = `Results: ${passed} / ${total} tests passed${failed > 0 ? ` — ${failed} failed` : " — all good! ✓"}`;
+    summary.style.color = failed > 0 ? "#c0392b" : "#1e8449";
+    summary.style.borderColor = failed > 0 ? "#f1948a" : "#a9dfbf";
+  </script>
+
+</body>
+</html>
