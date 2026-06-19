@@ -19,11 +19,11 @@ The Dashboard displays the following information: stats, budget progress bar, 7-
 
 | Rule | Pattern | Example |
 |---|---|---|
-| Description | `/^\S(?:.*\S)?$/` | `"Lunch"` ✓ `" Lunch"` ✗ |
-| Amount | `/^(0\|[1-9]\d*)(\.\d{1,2})?$/` | `"12.50"` ✓ `"12.999"` ✗ |
-| Date | `/^\d{4}-(0[1-9]\|1[0-2])-(0[1-9]\|[12]\d\|3[01])$/` | `"2025-09-30"` ✓ `"2025-13-01"` ✗ |
-| Category | `/^[A-Za-z&]+(?:[ -][A-Za-z&]+)*$/` | `"Food"` ✓ `"Food123"` ✗ |
-| **Advanced** | `/\b(\w+)\s+\1\b/i` | `"lunch lunch"` ✗ (duplicate word) |
+| Description | `/^\S(?:.*\S)?$/` | Yes to `"Lunch"`  No to`" Lunch"`  |
+| Amount | `/^(0\|[1-9]\d*)(\.\d{1,2})?$/` | Yes to`"12.50"` No to `"12.999"`  |
+| Date | `/^\d{4}-(0[1-9]\|1[0-2])-(0[1-9]\|[12]\d\|3[01])$/` | Yes to`"2025-09-30"` No to `"2025-13-01"`  |
+| Category | `/^[A-Za-z&]+(?:[ -][A-Za-z&]+)*$/` | Yes to`"Food"` No to `"Food123"`  |
+| **Advanced** | `/\b(\w+)\s+\1\b/i` | No to`"lunch lunch"`  (duplicate word) |
 
 ---
 
@@ -49,11 +49,7 @@ Avoid using the following:Do not use:
 Click 2 to launch the page in Live Server.
 3. Open tests.html as you would open any other HTML file.
 
-
 ---
-
-## Author
-The title of the page should be your Name: your-username/your-page-name | your@email.com
 
 ## Demo Video
 [Link here]
