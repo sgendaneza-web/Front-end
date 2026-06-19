@@ -53,3 +53,135 @@ Click 2 to launch the page in Live Server.
 
 ## Demo Video
 https://drive.google.com/file/d/1red9akoKKyj6eedSXmQ1I14gyBc3Oz_d/view?usp=sharing
+
+# CampusCash — M1 Planning
+
+## Theme
+Student Finance Tracker
+
+---
+
+## Wireframes
+
+### Setup Screen
+```
++---------------------------+
+|   Welcome to CampusCash  |
+|   Name: [____________]   |
+|   Period: [Trimester v]  |
+|   Income: [__________]   |
+|   Currency: [RWF v]      |
+|   Housing: [Yes/No v]    |
+|   [Get Started] [Skip]   |
++---------------------------+
+```
+
+### App Layout (Mobile)
+```
++--------+------------------+
+| side   |                  |
+| bar    |   Section        |
+|        |   Content        |
+| Home   |                  |
+| Dash   |                  |
+| Trans  |                  |
+| Add    |                  |
+| Sett   |                  |
+| About  |                  |
++--------+------------------+
+```
+
+### Dashboard
+```
++----------------------------------+
+| Income | Expenses | Balance | Top |
+|--------|----------|---------|-----|
+| [Budget Cap input]               |
+| [====Progress Bar====]           |
+| [7-day trend chart canvas]       |
+| Food    [========] 45%           |
+| Housing [====] 30%               |
++----------------------------------+
+```
+
+### Transactions
+```
++----------------------------------+
+| [Search regex input] [x] ignore  |
+| Sort: [Date] [Desc] [Amount]     |
+|----------------------------------|
+| Desc | Amount | Cat | Type | Date|
+|------|--------|-----|------|-----|
+| ...  | ...    | ... | ...  | ... |
+|----------------------------------|
+| [Export JSON]  [Import JSON]     |
++----------------------------------+
+```
+
+---
+
+## Data Model
+
+### Transaction
+```json
+{
+  "id": "txn_0001",
+  "description": "Lunch at cafeteria",
+  "amount": "12.50",
+  "category": "Food",
+  "type": "expense",
+  "date": "2025-09-30",
+  "createdAt": "2025-09-30T10:00:00.000Z",
+  "updatedAt": "2025-09-30T10:00:00.000Z"
+}
+```
+
+### Settings
+```json
+{
+  "name": "Sonia",
+  "period": "Trimester",
+  "startDate": "2025-09-01",
+  "endDate": "2025-11-30",
+  "income": "500000",
+  "currency": "RWF",
+  "housing": "yes",
+  "rent": "80000"
+}
+```
+
+### Categories
+Food, Housing, Transport, Books & Stationery, Entertainment, Other
+
+---
+
+## Accessibility Plan
+- Skip-to-content link at top of page
+- All inputs have associated labels
+- Errors announced via aria-live="polite"
+- Budget exceeded announced via aria-live="assertive"
+- Visible focus styles on all interactive elements
+- Semantic landmarks: header, nav, main, section, footer
+- Keyboard-only navigation supported throughout
+- prefers-reduced-motion respected
+
+---
+
+## File Structure
+```
+campuscash/
+├── index.html
+├── seed.json
+├── tests.html
+├── PLANNING.md
+├── README.md
+├── styles/
+│   ├── main.css
+│   └── dashboard.css
+└── scripts/
+    ├── ui.js
+    ├── state.js
+    ├── storage.js
+    ├── validators.js
+    └── search.js
+```
