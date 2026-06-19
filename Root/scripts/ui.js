@@ -3,6 +3,12 @@ import { validateTransaction } from "./validators.js";
 import { compileRegex, highlight } from "./search.js";
 import { loadSettings, saveSettings } from "./storage.js";
 
+// Budget cap
+const budgetInput = document.getElementById("budget-cap");
+const budgetStatus = document.getElementById("budget-status");
+const progressBar = document.getElementById("progress-bar");
+
+
 // ============================================================
 // SECTION NAVIGATION
 // ============================================================
@@ -559,10 +565,6 @@ function renderCategoryBars(categories, totalExpenses, currency) {
 subscribe(renderDashboard);
 renderDashboard(transactions);
 
-// Budget cap
-const budgetInput = document.getElementById("budget-cap");
-const budgetStatus = document.getElementById("budget-status");
-const progressBar = document.getElementById("progress-bar");
 
 function updateBudgetStatus(expensesArg) {
   const cap = Number(budgetInput.value) || 0;
@@ -615,6 +617,7 @@ function drawTrendChart(txns) {
   if (!canvas) return;
 
   const ctx = canvas.getContext("2d");
+  canvas.width = canvas.offsetWidth || 600;
   const W = canvas.width;
   const H = canvas.height;
   ctx.clearRect(0, 0, W, H);
@@ -717,3 +720,4 @@ subscribe(() => {
     drawTrendChart(transactions);
   }
 });
+
